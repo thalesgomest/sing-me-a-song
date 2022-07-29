@@ -2,12 +2,16 @@ import { faker } from '@faker-js/faker';
 import { Recommendation } from '@prisma/client';
 import { prisma } from '../../src/database.js';
 
-export const createRecommendation = (): Promise<Recommendation> => {
+export const createRecommendation = (
+	recommendation: Partial<Recommendation> = {}
+): Promise<Recommendation> => {
 	return prisma.recommendation.create({
 		data: {
-			name: faker.music.songName(),
-			youtubeLink: `https://www.youtube.com/${faker.datatype.uuid()}`,
-			score: undefined,
+			name: recommendation.name || faker.lorem.words(2),
+			youtubeLink:
+				recommendation.youtubeLink ||
+				`https://www.youtube.com/${faker.datatype.uuid()}`,
+			score: recommendation.score || undefined,
 		},
 	});
 };

@@ -8,7 +8,8 @@
 		"build": "tsc",
 		"start": "node ./dist/src/server.js",
 		"dev": "nodemon src/server.ts",
-		"test": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i"
+		"test:integration": "NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest --testPathPattern=tests/integrations -- -i --coverage",
+		"test": "dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i --coverage"
 	},
 	"prisma": {
 		"seed": "ts-node prisma/seed.ts"
@@ -43,6 +44,7 @@
 		"express": "^4.17.1",
 		"express-async-errors": "^3.1.1",
 		"joi": "^17.4.1",
+		"lodash": "^4.17.21",
 		"react-player": "^2.10.0"
 	}
 }
