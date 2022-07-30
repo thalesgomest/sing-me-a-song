@@ -69,7 +69,7 @@ async function remove(id: number) {
 	});
 }
 
-export const recommendationRepository = {
+export default {
 	create,
 	findAll,
 	find,
