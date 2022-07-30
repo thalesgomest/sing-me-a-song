@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import recommendationRepository from '../../src/repositories/recommendationRepository.js';
 import { recommendationService } from '../../src/services/recommendationsService.js';
+import _ from 'lodash';
 import { jest } from '@jest/globals';
 import {
 	createRecommendationData,
@@ -171,6 +172,71 @@ describe('Unitary tests', () => {
 
 			await recommendationService.downvote(recommendation.id);
 			expect(spy).toBeCalledWith(recommendation.id);
+		});
+	});
+
+	describe('get', () => {
+		it('should call function findAll recommendations', async () => {
+			const recommendations = await Promise.all(
+				_.times(5, async () => {
+					return await createRecommendation();
+				})
+			);
+			const spy = jest
+				.spyOn(recommendationRepository, 'findAll')
+				.mockImplementationOnce((): any => recommendations);
+
+			const result = await recommendationService.get();
+			expect(spy).toHaveBeenCalled();
+			expect(result).toEqual(recommendations);
+		});
+	});
+
+	describe('getTop', () => {
+		it('should call function getAmountByScore recommendations', async () => {
+			const amount = faker.datatype.number({ min: 1 });
+			const recommendations = await Promise.all(
+				_.times(10, async () => {
+					return await createRecommendation();
+				})
+			);
+			const spy = jest
+				.spyOn(recommendationRepository, 'getAmountByScore')
+				.mockImplementationOnce((): any => recommendations);
+
+			const result = await recommendationService.getTop(amount);
+			expect(spy).toHaveBeenCalledWith(amount);
+			expect(result).not.toBeNull();
+		});
+	});
+
+	describe('getById', () => {
+		it('should call function find in recommendations repository', async () => {
+			const recommendation = await createRecommendation();
+
+			const spy = jest
+				.spyOn(recommendationRepository, 'find')
+				.mockImplementationOnce((): any => recommendation);
+
+			const result = await recommendationService.getById(
+				recommendation.id
+			);
+			expect(spy).toHaveBeenCalledWith(recommendation.id);
+			expect(result).not.toBeNull();
+		});
+
+		it('should throw error for a id not found in recommendations', async () => {
+			const id = faker.datatype.number({ max: 0 });
+
+			jest.spyOn(recommendationRepository, 'find').mockImplementationOnce(
+				(): any => {}
+			);
+
+			const result = recommendationService.getById(id);
+			expect(result).rejects.toEqual({
+				type: 'not_found',
+				message: '',
+			});
 		});
 	});
 });
