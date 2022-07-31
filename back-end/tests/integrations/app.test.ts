@@ -252,4 +252,14 @@ describe('Integration Tests', () => {
 			expect(response.body).toEqual([]);
 		});
 	});
+
+	describe('DELETE /recommendations', () => {
+		it('should delete all data on database in enviroment of tests', async () => {
+			const response = await supertest(app)
+				.delete('/recommendations')
+				.send();
+
+			expect(response.status).toBe(200);
+		});
+	});
 });

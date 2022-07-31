@@ -348,6 +348,16 @@ describe('Unitary tests', () => {
 			expect(result).toEqual(recommendations[floor]);
 		});
 	});
+
+	describe('removeAll recommendations', () => {
+		it('should clean database with deleteAll in enviroment of tests', async () => {
+			const spy = jest
+				.spyOn(recommendationRepository, 'removeAll')
+				.mockImplementationOnce((): any => {});
+			await recommendationService.deleteAll();
+			expect(spy).toHaveBeenCalled();
+		});
+	});
 });
 
 afterAll(async () => {
