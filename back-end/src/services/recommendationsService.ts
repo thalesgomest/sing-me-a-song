@@ -82,6 +82,10 @@ function getScoreFilter(random: number) {
 	return 'lte';
 }
 
+async function deleteAll() {
+	await recommendationRepository.removeAll();
+}
+
 export const recommendationService = {
 	insert,
 	upvote,
@@ -90,4 +94,5 @@ export const recommendationService = {
 	get,
 	getById: getByIdOrFail,
 	getTop,
+	deleteAll,
 };

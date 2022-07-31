@@ -246,10 +246,10 @@ describe('Integration Tests', () => {
 
 		it('should not return a recommendation if does not exist recommendations registred', async () => {
 			const response = await supertest(app)
-				.get('/recommendations/top')
+				.get('/recommendations/top/10')
 				.send();
 
-			expect(response.body).toEqual({});
+			expect(response.body).toEqual([]);
 		});
 	});
 });

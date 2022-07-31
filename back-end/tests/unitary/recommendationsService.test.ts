@@ -349,3 +349,7 @@ describe('Unitary tests', () => {
 		});
 	});
 });
+
+afterAll(async () => {
+	await cleanDatabase();
+});
