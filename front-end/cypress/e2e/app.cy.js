@@ -41,7 +41,6 @@ describe('random page', () => {
 		cy.intercept('GET', '/recommendations/random').as('getRecommendations');
 		cy.wait('@getRecommendations');
 		cy.get('article').should('have.length', 1);
-		console.log('article', cy.get('article'));
 	});
 });
 
